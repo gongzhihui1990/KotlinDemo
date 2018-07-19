@@ -1,23 +1,18 @@
 package com.xilai.express.delivery.ui.activity
 
 import android.annotation.SuppressLint
-import android.content.BroadcastReceiver
-import android.content.Context
 import android.content.Intent
-import android.content.IntentFilter
-import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
-import android.os.Vibrator
-import android.support.v4.view.PagerAdapter
-import android.view.Gravity
-import android.view.MotionEvent
-import android.view.View
-import android.view.ViewGroup
-import android.widget.TextView
+import android.support.v4.app.Fragment
+import android.support.v4.app.FragmentManager
+import android.support.v4.app.FragmentPagerAdapter
+import android.support.v4.view.ViewPager
 import com.xilai.express.delivery.R
 import com.xilai.express.delivery.service.FrontService
 import com.xilai.express.delivery.ui.BaseActivity
-import framework.util.Loger
+import com.xilai.express.delivery.ui.fragment.NullFragment
+import com.xilai.express.delivery.ui.fragment.PlayFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 import kotlin.collections.ArrayList
@@ -31,80 +26,74 @@ class MainActivity : BaseActivity() {
         return R.layout.activity_main
     }
 
-    private val receiver = object : BroadcastReceiver() {
-        @SuppressLint("SetTextI18n")
-        override fun onReceive(context: Context, intent: Intent) {
-            val vibrator = getSystemService(VIBRATOR_SERVICE) as Vibrator
-            vibrator.vibrate(20L)
-            tvContent.text = intent.action + ":data [" + intent.extras.getString("data") + "]"
+    /**
+     * 开个保活服务
+     */
+    private fun startForegroundService() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startForegroundService(Intent(baseContext, FrontService::class.java))
+        } else {
+            // Pre-O behavior.
+            startService(Intent(baseContext, FrontService::class.java))
         }
     }
 
-    @SuppressLint("SetTextI18n")
+    @SuppressLint("SetTextI18n", "ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         tvContent.text = "开启监听"
-        val intentFilter = IntentFilter()
-        intentFilter.addAction("com.xilai.express.delivery")
-        registerReceiver(receiver, intentFilter)
         btnSend.setOnClickListener({
             val intent = Intent("com.xilai.express.delivery")
             intent.putExtra("data", Date().toGMTString())
             sendBroadcast(Intent(intent))
         })
-        startService(Intent(baseContext, FrontService::class.java))
 
-        val viewList = ArrayList<View>()
+        startForegroundService()
+
+        val fragmentList = ArrayList<Fragment>()
         var i = 0
-        while (i < 3) {
-            i++
-            val vChild = TextView(baseContext)
-            vChild.text = "view" + i.toString()
-            vChild.setTextColor(Color.BLACK)
-            vChild.gravity = Gravity.CENTER
-            vChild.layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
-            viewList.add(vChild)
-        }
-        viewPager.adapter = AdViewPagerAdapter(this, viewList)
-
-        btnPress.setOnTouchListener { v, event ->
-            when (event.action) {
-                MotionEvent.ACTION_DOWN -> {
-                    viewB.visibility = View.VISIBLE
-                }
-                MotionEvent.ACTION_UP -> {
-                    viewB.visibility = View.GONE
-                }
-                else -> Loger.i("action:" + event.action)
+        val playIndex = 1
+        val myIndexSize = 5
+        while (i < myIndexSize) {
+            val vChild: Fragment
+            if (i == playIndex) {
+                vChild = PlayFragment()
+            } else {
+                vChild = NullFragment()
             }
-            true
+            i++
+            fragmentList.add(vChild)
         }
+        viewPager.adapter = AdViewPagerAdapter(fragmentList, supportFragmentManager)
+
+        //为按钮做事件
+//        btnPress.setOnTouchListener { v, event ->
+//            when (event.action) {
+//                MotionEvent.ACTION_DOWN -> {
+//                    viewPager.isEnabled = false
+//                    //viewB.visibility = View.VISIBLE
+//                }
+//                MotionEvent.ACTION_UP -> {
+//                    viewPager.isEnabled = true
+//                    //viewB.visibility = View.GONE
+//                }
+//                else -> Loger.i("action:" + event.action)
+//            }
+//            true
+//        }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        unregisterReceiver(receiver)
-    }
 
-    inner class AdViewPagerAdapter(private val context: Context, private val list: List<View>) : PagerAdapter() {
-
-        override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {
-            container.removeView(list[position])// 删除页卡
-        }
-
-        // 这个方法用来实例化页卡
-        override fun instantiateItem(container: ViewGroup, position: Int): Any {
-            container.addView(list[position], 0)// 添加页卡
-            return list[position]
-        }
-
-        // 返回页卡的数量
+    inner class AdViewPagerAdapter(private val list: List<Fragment>, fm: FragmentManager) :
+            FragmentPagerAdapter(fm) {
         override fun getCount(): Int {
             return list.size
         }
 
-        override fun isViewFromObject(arg0: View, arg1: Any): Boolean {
-            return arg0 === arg1// 官方提示这样写
+        override fun getItem(position: Int): Fragment {
+            return list.get(position)
         }
+
+
     }
 }

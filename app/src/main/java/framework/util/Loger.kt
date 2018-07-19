@@ -19,6 +19,7 @@ object Loger {
     private val DO_PRINT_STREAM = false
 
     private val IS_DEBUG = true
+    private val IS_BuglyLog = false
 
     @JvmOverloads
     fun v(msg: String, tag: String = "") {
@@ -29,7 +30,11 @@ object Loger {
                 tag = generateTag()
                 msg = generateMsg(msg)
             }
-            BuglyLog.v(tag, msg)
+            if (IS_BuglyLog) {
+                BuglyLog.v(tag, msg)
+            } else {
+                Log.v(tag, msg)
+            }
         }
     }
 
@@ -42,7 +47,11 @@ object Loger {
                 tag = generateTag()
                 msg = generateMsg(msg)
             }
-            BuglyLog.i(tag, msg)
+            if (IS_BuglyLog) {
+                BuglyLog.i(tag, msg)
+            } else {
+                Log.i(tag, msg)
+            }
         }
     }
 
@@ -55,7 +64,11 @@ object Loger {
                 tag = generateTag()
                 msg = generateMsg(msg)
             }
-            BuglyLog.d(tag, msg)
+            if (IS_BuglyLog) {
+                BuglyLog.d(tag, msg)
+            } else {
+                Log.d(tag, msg)
+            }
         }
     }
 
@@ -68,7 +81,11 @@ object Loger {
                 tag = generateTag()
                 msg = generateMsg(msg)
             }
-            BuglyLog.w(tag, msg)
+            if (IS_BuglyLog) {
+                BuglyLog.w(tag, msg)
+            } else {
+                Log.w(tag, msg)
+            }
         }
     }
 
@@ -81,7 +98,11 @@ object Loger {
                 tag = generateTag()
                 msg = generateMsg(msg)
             }
-            BuglyLog.e(tag, msg)
+            if (IS_BuglyLog) {
+                BuglyLog.e(tag, msg)
+            } else {
+                Log.e(tag, msg)
+            }
         }
     }
 
