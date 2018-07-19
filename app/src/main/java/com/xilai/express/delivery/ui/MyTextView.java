@@ -13,6 +13,8 @@ import android.widget.Button;
 
 @SuppressLint("AppCompatCustomView")
 public class MyTextView extends Button {
+    private boolean disAllowInterceptTouchEvent = false;
+
     public MyTextView(Context context) {
         super(context);
     }
@@ -29,9 +31,17 @@ public class MyTextView extends Button {
         super(context, attrs, defStyleAttr, defStyleRes);
     }
 
+    public void disallowInterceptTouchEvent() {
+        disAllowInterceptTouchEvent = true;
+    }
+
+    public void allowInterceptTouchEvent() {
+        disAllowInterceptTouchEvent = false;
+    }
+
     @Override
     public boolean dispatchTouchEvent(MotionEvent event) {
-        getParent().requestDisallowInterceptTouchEvent(true);
+        getParent().requestDisallowInterceptTouchEvent(disAllowInterceptTouchEvent);
         return super.dispatchTouchEvent(event);
     }
 }

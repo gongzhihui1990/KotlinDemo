@@ -8,16 +8,58 @@
     android:orientation="vertical">
 
 
-    <com.xilai.express.delivery.ui.MyTextView
-        android:id="@+id/play"
+    <ImageView
+        android:id="@+id/ivTop"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="play"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:src="@mipmap/ic_launcher_round"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+
+    <ImageView
+        android:id="@+id/ivBottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/ic_launcher_round"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <ImageView
+        android:id="@+id/ivStart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/ic_launcher_round"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        />
+
+    <ImageView
+        android:id="@+id/ivEnd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/ic_launcher_round"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+
+    <com.xilai.express.delivery.ui.MyTextView
+        android:id="@+id/play"
+        android:layout_margin="40dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:gravity="center"
+        android:text="play"
+        app:layout_constraintBottom_toTopOf="@id/ivBottom"
+        app:layout_constraintTop_toBottomOf="@id/ivTop"
+        app:layout_constraintEnd_toStartOf="@id/ivEnd"
+        app:layout_constraintStart_toEndOf="@id/ivStart"
         tools:text="play" />
 
     <ProgressBar
@@ -27,7 +69,7 @@
         android:layout_height="wrap_content"
         android:max="100"
         android:progress="0"
+        app:layout_constraintBottom_toTopOf="@id/play"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/play" />
+        app:layout_constraintStart_toStartOf="parent" />
 </android.support.constraint.ConstraintLayout>

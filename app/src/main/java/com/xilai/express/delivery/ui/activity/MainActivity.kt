@@ -7,15 +7,12 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
-import android.support.v4.view.ViewPager
 import com.xilai.express.delivery.R
 import com.xilai.express.delivery.service.FrontService
 import com.xilai.express.delivery.ui.BaseActivity
 import com.xilai.express.delivery.ui.fragment.NullFragment
 import com.xilai.express.delivery.ui.fragment.PlayFragment
 import kotlinx.android.synthetic.main.activity_main.*
-import java.util.*
-import kotlin.collections.ArrayList
 
 /**
  * Created by caroline on 2018/7/18.
@@ -41,13 +38,6 @@ class MainActivity : BaseActivity() {
     @SuppressLint("SetTextI18n", "ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        tvContent.text = "开启监听"
-        btnSend.setOnClickListener({
-            val intent = Intent("com.xilai.express.delivery")
-            intent.putExtra("data", Date().toGMTString())
-            sendBroadcast(Intent(intent))
-        })
-
         startForegroundService()
 
         val fragmentList = ArrayList<Fragment>()
@@ -65,22 +55,6 @@ class MainActivity : BaseActivity() {
             fragmentList.add(vChild)
         }
         viewPager.adapter = AdViewPagerAdapter(fragmentList, supportFragmentManager)
-
-        //为按钮做事件
-//        btnPress.setOnTouchListener { v, event ->
-//            when (event.action) {
-//                MotionEvent.ACTION_DOWN -> {
-//                    viewPager.isEnabled = false
-//                    //viewB.visibility = View.VISIBLE
-//                }
-//                MotionEvent.ACTION_UP -> {
-//                    viewPager.isEnabled = true
-//                    //viewB.visibility = View.GONE
-//                }
-//                else -> Loger.i("action:" + event.action)
-//            }
-//            true
-//        }
     }
 
 
