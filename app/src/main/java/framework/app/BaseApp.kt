@@ -7,8 +7,11 @@ package framework.app
 import android.annotation.SuppressLint
 import android.app.ActivityManager
 import android.app.Application
+import android.app.job.JobInfo
+import android.app.job.JobScheduler
 import android.content.Context
 import android.text.TextUtils
+import android.util.Log
 import framework.util.Loger
 import java.io.BufferedReader
 import java.io.FileReader

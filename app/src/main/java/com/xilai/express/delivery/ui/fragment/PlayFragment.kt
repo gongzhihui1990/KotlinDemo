@@ -7,6 +7,7 @@ import android.widget.Toast
 import com.xilai.express.delivery.R
 import framework.rx.ProgressObserverImplementation
 import framework.rx.RxHelper
+import framework.util.Loger
 import io.reactivex.Observable
 import kotlinx.android.synthetic.main.fragment_play.*
 
@@ -46,7 +47,20 @@ class PlayFragment : BaseFragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        //val position = arrayOfNulls<Int>(2)
+        val position = intArrayOf(0, 0)
+
+        play.addOnLayoutChangeListener { v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom ->
+
+            v.getLocationInWindow(position)
+            Loger.w("x,y :" + position[0] + " " + position[1])
+            v.getLocationOnScreen(position)
+            Loger.e("x,y :" + position[0] + " " + position[1])
+
+        }
         play.setOnTouchListener { v, event ->
+            Loger.e("x,y :" + event.x + " " + event.y)
+
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
                     progress = 0
@@ -61,7 +75,9 @@ class PlayFragment : BaseFragment() {
                     play.allowInterceptTouchEvent()
                 }
                 MotionEvent.ACTION_MOVE -> {
-                    if (Math.abs(event.x - play.x) > play.width / 2 || Math.abs(event.y - play.y) > play.height / 2) {
+                    Loger.i("x,y :" + play.width + " " + play.height)
+                    if (event.x > play.width || event.x < 0 || event.y > play.height || event.y < 0) {
+//                    if (Math.abs(event.x - position[0]) > play.width / 2 || Math.abs(event.y - position[1]) > play.height / 2) {
                         progress = 0
                         playProgress.progress = 0
                         run = false
@@ -74,4 +90,5 @@ class PlayFragment : BaseFragment() {
         Thread(progressRun).start()
         super.onViewCreated(view, savedInstanceState)
     }
+
 }

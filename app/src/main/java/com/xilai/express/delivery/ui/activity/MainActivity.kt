@@ -12,7 +12,9 @@ import com.xilai.express.delivery.service.FrontService
 import com.xilai.express.delivery.ui.BaseActivity
 import com.xilai.express.delivery.ui.fragment.NullFragment
 import com.xilai.express.delivery.ui.fragment.PlayFragment
+import framework.util.Loger
 import kotlinx.android.synthetic.main.activity_main.*
+
 
 /**
  * Created by caroline on 2018/7/18.
@@ -27,6 +29,7 @@ class MainActivity : BaseActivity() {
      * 开个保活服务
      */
     private fun startForegroundService() {
+        //启动前台服务
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             startForegroundService(Intent(baseContext, FrontService::class.java))
         } else {
@@ -35,14 +38,14 @@ class MainActivity : BaseActivity() {
         }
     }
 
+
     @SuppressLint("SetTextI18n", "ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         startForegroundService()
-
         val fragmentList = ArrayList<Fragment>()
         var i = 0
-        val playIndex = 1
+        val playIndex = 0
         val myIndexSize = 5
         while (i < myIndexSize) {
             val vChild: Fragment
@@ -50,13 +53,31 @@ class MainActivity : BaseActivity() {
                 vChild = PlayFragment()
             } else {
                 vChild = NullFragment()
+                val bundle = Bundle()
+                bundle.putString(String::class.java.name, "功能" + i.toString())
+                vChild.arguments = bundle
             }
             i++
             fragmentList.add(vChild)
         }
         viewPager.adapter = AdViewPagerAdapter(fragmentList, supportFragmentManager)
+        Loger.w("processExtraData:" )
+        processExtraData()
     }
 
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        Loger.w("processExtraData:" )
+        processExtraData()
+    }
+
+    private fun processExtraData() {
+        val itemIndex = intent.getIntExtra("itemIndex", 0)
+        Loger.w("processExtraData:" + itemIndex)
+        viewPager.setCurrentItem(itemIndex, false)
+    }
 
     inner class AdViewPagerAdapter(private val list: List<Fragment>, fm: FragmentManager) :
             FragmentPagerAdapter(fm) {
@@ -65,7 +86,7 @@ class MainActivity : BaseActivity() {
         }
 
         override fun getItem(position: Int): Fragment {
-            return list.get(position)
+            return list[position]
         }
 
 
