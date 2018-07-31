@@ -1,21 +1,20 @@
 package framework.app;
 
 import android.app.ActivityManager;
-import android.app.job.JobInfo;
-import android.app.job.JobScheduler;
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import android.util.Log;
 
 import com.xilai.express.delivery.service.FrontService;
 
 import java.util.ArrayList;
 
+import framework.util.Loger;
+
 /**
- * Created by caroline on 2018/7/20.
+ * @author caroline
+ * @date 2018/7/20
  */
 
 public class AppReceiver extends BroadcastReceiver {
@@ -40,6 +39,7 @@ public class AppReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        Loger.INSTANCE.e("action:" + intent.getAction());
         startForegroundService(context);
     }
 

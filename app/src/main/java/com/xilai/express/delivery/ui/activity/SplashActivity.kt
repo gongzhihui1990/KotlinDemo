@@ -30,8 +30,8 @@ class SplashActivity : BaseActivity() {
             Loger.i(param)
             true
         })
-        //蓝牙 电话通讯录 位置 相机、麦克风 存储空间
-        val taskPermission = RxPermissions(this).request(Manifest.permission.BLUETOOTH, Manifest.permission.BLUETOOTH_ADMIN, Manifest.permission.GET_ACCOUNTS, Manifest.permission.READ_PHONE_STATE, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.RECORD_AUDIO, Manifest.permission.WAKE_LOCK, Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.MOUNT_UNMOUNT_FILESYSTEMS, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_SETTINGS)
+        //蓝牙 电话通讯录 位置 相机、麦克风 存储空间android.permission.WRITE_SETTINGS
+        val taskPermission = RxPermissions(this).request(Manifest.permission.WRITE_SETTINGS,Manifest.permission.BLUETOOTH, Manifest.permission.BLUETOOTH_ADMIN, Manifest.permission.GET_ACCOUNTS, Manifest.permission.READ_PHONE_STATE, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.RECORD_AUDIO, Manifest.permission.WAKE_LOCK, Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.MOUNT_UNMOUNT_FILESYSTEMS, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_SETTINGS)
         //延迟操作
         val taskDelay = Observable.just(true).delay(500, TimeUnit.MILLISECONDS)
         val zipperSplash = io.reactivex.functions.Function3<Boolean, Boolean, Boolean, Boolean>({ permission, delay, init -> permission && delay && init })

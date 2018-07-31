@@ -1,5 +1,6 @@
 package com.xilai.express.delivery.ui.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.MotionEvent
 import android.view.View
@@ -63,6 +64,7 @@ class PlayFragment : BaseFragment() {
 
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
+                    context!!.sendBroadcast(Intent("com.test.onStartJob"))
                     progress = 0
                     playProgress.progress = 0
                     run = true

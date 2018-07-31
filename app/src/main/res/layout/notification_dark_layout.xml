@@ -4,12 +4,6 @@
     android:layout_height="match_parent">
 
 
-    <ImageView
-        android:id="@+id/ivBg"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@android:color/holo_red_dark" />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -101,6 +95,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
+                android:textColor="@android:color/white"
                 android:gravity="center"
                 android:text="操作1"
                 android:textSize="14sp" />
@@ -118,6 +113,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
+                android:textColor="@android:color/white"
                 android:scaleType="center"
                 android:src="@mipmap/main_order" />
 
@@ -126,6 +122,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
+                android:textColor="@android:color/white"
                 android:gravity="center"
                 android:text="操作2"
                 android:textSize="14sp" />
@@ -152,6 +149,7 @@
                 android:id="@+id/opt3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@android:color/white"
                 android:layout_marginTop="4dp"
                 android:gravity="center"
                 android:text="操作3"

@@ -58,16 +58,13 @@ class FrontService : Service() {
     private fun showNotification() {
         val id = "com.xilai.express.delivery"
         val builder = NotificationCompat.Builder(this, id)
-        val remoteView = RemoteViews(packageName, R.layout.notification_layout)
 
-        remoteView.setImageViewResource(R.id.ivBg, android.R.color.holo_red_light)
+        val remoteView = RemoteViews(packageName, R.layout.notification_light_layout)
+
         remoteView.setImageViewResource(R.id.nIcon, R.mipmap.icon_user)
         remoteView.setTextViewText(R.id.opt1, "接单")
         remoteView.setTextViewText(R.id.opt2, "打单")
         remoteView.setTextViewText(R.id.opt3, "消息")
-        remoteView.setTextColor(R.id.opt1, resources.getColor(android.R.color.white))
-        remoteView.setTextColor(R.id.opt2, resources.getColor(android.R.color.white))
-        remoteView.setTextColor(R.id.opt3, resources.getColor(android.R.color.white))
 
         val openIntent01 = Intent(this, MainActivity::class.java)
         openIntent01.putExtra("itemIndex", 1)
@@ -88,13 +85,13 @@ class FrontService : Service() {
         remoteView.setOnClickPendingIntent(R.id.opt2, intentOpt2)
         remoteView.setOnClickPendingIntent(R.id.opt3, intentOpt3)
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            builder.setCustomContentView(remoteView)
-        } else {
-            builder.setContent(remoteView)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            builder.setCustomBigContentView(remoteView)
         }
-        val remoteViewBig = RemoteViews(packageName, R.layout.notification_layout_big)
-        builder.setCustomBigContentView(remoteViewBig)
+        builder.setContent(remoteView)
+
+        //val remoteViewBig = RemoteViews(packageName, R.layout.notification_layout_big)
+        //builder.setCustomBigContentView(remoteViewBig)
 
         builder.priority = NotificationCompat.PRIORITY_MAX
         builder.setOngoing(true)
@@ -113,7 +110,7 @@ class FrontService : Service() {
         }
 
         val notification: Notification = builder.build()
-        startForeground(99, notification)
+        startForeground(1, notification)
 
     }
 

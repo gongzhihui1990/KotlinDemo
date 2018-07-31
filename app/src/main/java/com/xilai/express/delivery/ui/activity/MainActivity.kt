@@ -7,13 +7,18 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
+import com.bus.util.AES
 import com.xilai.express.delivery.R
 import com.xilai.express.delivery.service.FrontService
 import com.xilai.express.delivery.ui.BaseActivity
+import com.xilai.express.delivery.ui.fragment.BusApiFragment
 import com.xilai.express.delivery.ui.fragment.NullFragment
 import com.xilai.express.delivery.ui.fragment.PlayFragment
+import com.xilai.express.delivery.ui.fragment.ScannerFragment
 import framework.util.Loger
 import kotlinx.android.synthetic.main.activity_main.*
+import java.net.URLDecoder
+import java.net.URLEncoder
 
 
 /**
@@ -45,12 +50,18 @@ class MainActivity : BaseActivity() {
         startForegroundService()
         val fragmentList = ArrayList<Fragment>()
         var i = 0
-        val playIndex = 0
+        val busApiIndex = 0
+        val scanIndex = 1
+        val playIndex = 2
         val myIndexSize = 5
         while (i < myIndexSize) {
             val vChild: Fragment
-            if (i == playIndex) {
+            if (i == busApiIndex) {
+                vChild = BusApiFragment()
+            } else if (i == playIndex) {
                 vChild = PlayFragment()
+            } else if (i == scanIndex) {
+                vChild = ScannerFragment()
             } else {
                 vChild = NullFragment()
                 val bundle = Bundle()
@@ -61,7 +72,7 @@ class MainActivity : BaseActivity() {
             fragmentList.add(vChild)
         }
         viewPager.adapter = AdViewPagerAdapter(fragmentList, supportFragmentManager)
-        Loger.w("processExtraData:" )
+        Loger.w("processExtraData:")
         processExtraData()
     }
 
@@ -69,7 +80,7 @@ class MainActivity : BaseActivity() {
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         setIntent(intent)
-        Loger.w("processExtraData:" )
+        Loger.w("processExtraData:")
         processExtraData()
     }
 
